@@ -23,13 +23,13 @@ Outline for a rental payment reminder system that reads tenant details and renta
 
 ![seqrental](https://github.com/user-attachments/assets/38b8637c-3598-413f-8596-1bf2826571e5)
 
-### Placeholder system design
-
-![image](https://github.com/user-attachments/assets/06dc1af8-edb7-4996-939b-293fd8812380)
-
 #### v2
 
 ![image](https://github.com/user-attachments/assets/85240d66-af9d-4802-bb14-1550a87b7763)
+
+### Placeholder system design
+
+![image](https://github.com/user-attachments/assets/06dc1af8-edb7-4996-939b-293fd8812380)
 
 ### Components and workflow
 
