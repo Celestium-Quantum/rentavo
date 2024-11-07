@@ -23,6 +23,10 @@ Outline for a rental payment reminder system that reads tenant details and renta
 
 ![seqrental](https://github.com/user-attachments/assets/38b8637c-3598-413f-8596-1bf2826571e5)
 
+### Placeholder system design
+
+![image](https://github.com/user-attachments/assets/06dc1af8-edb7-4996-939b-293fd8812380)
+
 ### Components and workflow
 
 1. Excel File: Contains tenant information and monthly rent. Columns may include:
