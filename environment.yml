@@ -1,0 +1,7 @@
+name: rentavo
+dependencies:
+  - python=3.10
+  - pandas=1.5.3
+  - pytest=8.3.3
+  - schedule=1.1.0
+  - openpyxl=3.1.2
