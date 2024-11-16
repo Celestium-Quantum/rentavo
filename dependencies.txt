@@ -1,3 +1,4 @@
-pandas==1.5.3           # For processing Excel files
-schedule==1.1.0         # For scheduling tasks
-openpyxl==3.1.2         # Backend for reading Excel files
+pandas==1.5.3
+schedule==1.1.0
+pytest==8.3.3
+openpyxl==3.1.2
