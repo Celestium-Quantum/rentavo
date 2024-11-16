@@ -57,4 +57,50 @@ def send_email(to_email, subject, body):
             server.starttls()
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, to_email, message.as_string())
-        print(f"Reminder sent to {to_email
+        print(f"Reminder sent to {to_email}")
+    except Exception as e:
+        print(f"Error sending email to {to_email}: {e}")
+
+
+def send_rental_reminders(file_path):
+    """
+    Process tenant data and send rental payment reminders.
+
+    Args:
+        file_path (str): Path to the Excel file.
+    """
+    data = load_data(file_path)
+    if data is None:
+        return
+
+    for _, row in data.iterrows():
+        name = row['Name']
+        email = row['Email']
+        due_amount = row['Due Amount']
+        due_date = row['Due Date']
+
+        subject = f"Rental Payment Reminder for {name}"
+        body = (f"Dear {name},\n\n"
+                f"This is a friendly reminder that your rental payment of ${due_amount} "
+                f"is due on {due_date}. Please ensure the payment is completed by then.\n\n"
+                "Best regards,\nYour Property Management Team")
+
+        send_email(email, subject, body)
+
+
+FILE_PATH = 'tenants.xlsx'
+
+
+def schedule_reminders():
+    """
+    Schedule rental payment reminders to be sent monthly.
+    """
+    schedule.every().month.at("09:00").do(send_rental_reminders, FILE_PATH)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+
+if __name__ == "__main__":
+    schedule_reminders()
