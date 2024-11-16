@@ -1,8 +1,8 @@
 """
-Module for sending rental payment reminders via email.
+Rental Payment Reminder Script.
 
-This script reads tenant information from an Excel file,
-processes it, and sends email reminders using SMTP.
+This script automates the sending of rental payment reminders via email.
+It reads tenant information from an Excel file and sends personalized emails.
 """
 
 import smtplib
@@ -11,6 +11,8 @@ from email.mime.text import MIMEText
 import time
 import pandas as pd
 import schedule
+import os
+
 
 def load_data(file_path):
     """
@@ -18,12 +20,17 @@ def load_data(file_path):
 
     Args:
         file_path (str): Path to the Excel file.
-    
+
     Returns:
         DataFrame: Loaded data as a pandas DataFrame.
     """
-    df = pd.read_excel(file_path)
-    return df
+    try:
+        df = pd.read_excel(file_path)
+        return df
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+        return None
+
 
 def send_email(to_email, subject, body):
     """
@@ -36,57 +43,18 @@ def send_email(to_email, subject, body):
     """
     smtp_server = 'smtp.example.com'
     smtp_port = 587
-    smtp_user = 'your_email@example.com'
-    smtp_password = 'your_password'
+    smtp_user = os.getenv("SMTP_USER", "your_email@example.com")
+    smtp_password = os.getenv("SMTP_PASSWORD", "your_password")
 
-    message = MIMEMultipart()
-    message['From'] = smtp_user
-    message['To'] = to_email
-    message['Subject'] = subject
-    message.attach(MIMEText(body, 'plain'))
+    try:
+        message = MIMEMultipart()
+        message['From'] = smtp_user
+        message['To'] = to_email
+        message['Subject'] = subject
+        message.attach(MIMEText(body, 'plain'))
 
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, to_email, message.as_string())
-    
-    print(f"Reminder sent to {to_email}")
-
-def send_rental_reminders(file_path):
-    """
-    Process tenant data and send rental payment reminders.
-
-    Args:
-        file_path (str): Path to the Excel file.
-    """
-    data = load_data(file_path)
-
-    for _, row in data.iterrows():
-        name = row['Name']
-        email = row['Email']
-        due_amount = row['Due Amount']
-        due_date = row['Due Date']
-
-        subject = f"Rental Payment Reminder for {name}"
-        body = (f"Dear {name},\n\n"
-                f"This is a friendly reminder that your rental payment of ${due_amount} "
-                f"is due on {due_date}. Please ensure the payment is completed by then.\n\n"
-                "Best regards,\nYour Property Management Team")
-
-        send_email(email, subject, body)
-
-# Constants
-FILE_PATH = 'tenants.xlsx'
-
-def schedule_reminders():
-    """
-    Schedule rental payment reminders to be sent monthly.
-    """
-    schedule.every().month.at("09:00").do(send_rental_reminders, FILE_PATH)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-if __name__ == "__main__":
-    schedule_reminders()
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, to_email, message.as_string())
+        print(f"Reminder sent to {to_email
