@@ -1,3 +1,4 @@
+# TODO: Create dependencies.txt
 import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
