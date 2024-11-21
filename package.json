@@ -1,0 +1,12 @@
+{
+  "name": "rental-reminder",
+  "version": "1.0.0",
+  "description": "A simple Node.js project for sending rental reminders without external dependencies.",
+  "main": "sample.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [],
+  "author": "Your Name",
+  "license": "MIT"
+}
